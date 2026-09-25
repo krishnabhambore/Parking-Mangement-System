@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parking Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Parking Desk</h1>
+    <div class="stats" id="stats" aria-live="polite"></div>
+  </header>
+
+  <main>
+    <section class="lot" aria-label="Parking bays">
+      <div class="zone"><h2>Bike bays</h2><div class="bays" id="bays-bike"></div></div>
+      <div class="zone"><h2>Car bays</h2><div class="bays" id="bays-car"></div></div>
+    </section>
+
+    <aside>
+      <form id="park-form">
+        <h2>Park a vehicle</h2>
+        <label>Plate number
+          <input id="plate" placeholder="KA01AB1234" autocomplete="off" required>
+        </label>
+        <label>Vehicle type
+          <select id="type">
+            {% for t, r in rates.items() %}<option value="{{ t }}">{{ t|capitalize }} (₹{{ r }}/h)</option>{% endfor %}
+          </select>
+        </label>
+        <button type="submit">Assign bay</button>
+      </form>
+
+      <div id="detail" class="detail" hidden></div>
+      <p id="toast" role="status"></p>
+    </aside>
+
+    <section class="history">
+      <h2>Recent check-outs</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Plate</th><th>Bay</th><th>In</th><th>Out</th><th>Fee</th></tr></thead>
+          <tbody id="history"><tr><td colspan="5" class="empty">No check-outs yet. Fees appear here after a vehicle leaves.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
